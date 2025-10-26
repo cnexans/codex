@@ -1,9 +1,22 @@
 % Reduce page margins
 \usepackage[margin=2cm]{geometry}
 
+% Remove section numbering
+\setcounter{secnumdepth}{0}
+
+% Change table of contents title to Spanish
+\renewcommand{\contentsname}{Índice}
+\renewcommand{\listfigurename}{Lista de Figuras}
+\renewcommand{\listtablename}{Lista de Tablas}
+\renewcommand{\refname}{Referencias}
+
 % Increase line spacing (1.5 spacing)
 \usepackage{setspace}
 \onehalfspacing
+
+% Handle Unicode subscripts and superscripts
+\usepackage{textcomp}
+\usepackage{upgreek}
 
 % Enable image support
 \usepackage{graphicx}
@@ -60,3 +73,65 @@
 % Force all pages to use fancy style by default
 \AtBeginDocument{\pagestyle{fancy}}
 \pagenumbering{arabic}
+
+% Define axiom, theorem, definition environments for mathematical content
+\usepackage{amsthm}
+
+% Enable hyperlinks and automatic labeling
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    pdfstartview=FitH
+}
+
+% Enable automatic labeling for theorems, definitions, etc.
+\usepackage{cleveref}
+\crefname{theorem}{Teorema}{Teoremas}
+\crefname{definition}{Definición}{Definiciones}
+\crefname{axiom}{Axioma}{Axiomas}
+\crefname{lemma}{Lema}{Lemas}
+\crefname{proposition}{Proposición}{Proposiciones}
+\crefname{corollary}{Corolario}{Corolarios}
+\crefname{example}{Ejemplo}{Ejemplos}
+\crefname{remark}{Observación}{Observaciones}
+\crefname{note}{Nota}{Notas}
+
+% Custom theorem style without italics
+\newtheoremstyle{customplain}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont} % BODYFONT (roman instead of italic)
+  {0pt}       % INDENT (empty indent)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+\theoremstyle{customplain}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{corollary}[theorem]{Corolario}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+\newtheorem{axiom}[theorem]{Axioma}
+
+% Define unnumbered versions
+\theoremstyle{definition}
+\newtheorem*{definition*}{Definición}
+\newtheorem*{axiom*}{Axioma}
+
+\theoremstyle{customplain}
+\newtheorem*{theorem*}{Teorema}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Observación}
+\newtheorem{note}[theorem]{Nota}

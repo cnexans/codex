@@ -22,7 +22,7 @@ PANDOC_PDF_FLAGS := $(PANDOC_COMMON_FLAGS) --pdf-engine=xelatex --toc-depth=2 -V
 TOC_TEX := $(ROOT)/pandoc/toc.tex
 HEADER_TEX := $(ROOT)/pandoc/header.tex
 
-.PHONY: all html pdf book clean
+.PHONY: all html pdf book clean watch watch-book
 
 all: html pdf book
 
@@ -49,3 +49,30 @@ clean:
 $(BOOK_PDF): $(ORDERED_MD_FILES) $(HEADER_TEX)
 	@mkdir -p $(dir $@)
 	$(PANDOC) $(PANDOC_PDF_FLAGS) --include-in-header=$(HEADER_TEX) $(ORDERED_MD_FILES) -o "$@"
+
+# Watch mode: rebuild when source files change
+# Uses fswatch on macOS or entr on Linux
+watch:
+	@echo "Watching for changes in $(DOCS_DIR) and $(ROOT)/pandoc..."
+	@echo "Press Ctrl+C to stop"
+	@if command -v fswatch >/dev/null 2>&1; then \
+		fswatch -o $(DOCS_DIR) $(ROOT)/pandoc $(ROOT)/Makefile | while read f; do make; echo "=== Rebuilt at $$(date) ==="; done; \
+	elif command -v entr >/dev/null 2>&1; then \
+		find $(DOCS_DIR) $(ROOT)/pandoc $(ROOT)/Makefile -type f | entr -c make; \
+	else \
+		echo "Error: Please install fswatch (brew install fswatch) or entr (brew install entr)"; \
+		exit 1; \
+	fi
+
+# Watch mode: rebuild only the book when source files change
+watch-book:
+	@echo "Watching for changes in $(DOCS_DIR) and $(ROOT)/pandoc (building book only)..."
+	@echo "Press Ctrl+C to stop"
+	@if command -v fswatch >/dev/null 2>&1; then \
+		fswatch -o $(DOCS_DIR) $(ROOT)/pandoc $(ROOT)/Makefile | while read f; do make book; echo "=== Book rebuilt at $$(date) ==="; done; \
+	elif command -v entr >/dev/null 2>&1; then \
+		find $(DOCS_DIR) $(ROOT)/pandoc $(ROOT)/Makefile -type f | entr -c make book; \
+	else \
+		echo "Error: Please install fswatch (brew install fswatch) or entr (brew install entr)"; \
+		exit 1; \
+	fi
