@@ -1,0 +1,62 @@
+% Reduce page margins
+\usepackage[margin=2cm]{geometry}
+
+% Increase line spacing (1.5 spacing)
+\usepackage{setspace}
+\onehalfspacing
+
+% Enable image support
+\usepackage{graphicx}
+\graphicspath{{./assets/}}
+
+% Code highlighting support (use listings instead of minted to avoid shell-escape dependency)
+% Local two-column support for specific sections
+\usepackage{multicol}
+\setlength{\columnsep}{18pt}
+\setlength{\columnseprule}{0pt}
+\raggedcolumns
+% Blind text for layout testing
+\usepackage{blindtext}
+ 
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+% Configure listings for better code formatting
+\lstdefinestyle{custom}{
+    frame=single,
+    breaklines=true,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{teal}
+}
+\lstset{style=custom}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.7}
+
+% Force page numbers on all pages (except title page)
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+% Ensure pages that use 'plain' style (e.g., chapter starts) also show numbers
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+}
+% Make the title page use an empty style (no page number)
+\makeatletter
+\g@addto@macro\maketitle{\thispagestyle{empty}}
+\makeatother
+% Force all pages to use fancy style by default
+\AtBeginDocument{\pagestyle{fancy}}
+\pagenumbering{arabic}
